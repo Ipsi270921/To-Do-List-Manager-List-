@@ -1,86 +1,102 @@
 """
-To-Do List Manager
-------------------------------------
+TO-DO LIST MANAGER (Remove by Number)
+-------------------------------------
 Features:
-1. Add a task
-2. View all tasks
-3. Remove a task by NUMBER
-4. Exit the program
-
-Why this version is better?
-- Users no longer need to type the exact task name.
-- Removing tasks by number is simple and user-friendly.
-- Prevents mistakes caused by spelling errors.
+- Add tasks
+- View tasks
+- Remove tasks by selecting task NUMBER (1, 2, 3…)
+- Handles invalid inputs gracefully
+- Uses pop(index) so it NEVER shows "task not found"
 """
 
-# List to store tasks
+# -----------------------------
+# Initialize empty task list
+# -----------------------------
 tasks = []
 
+
+def show_tasks():
+    """
+    Print all tasks with index numbers.
+    If no tasks exist, display a message.
+    """
+    if not tasks:
+        print("No tasks available.")
+        return
+
+    print("\nYour Tasks:")
+    for index, task in enumerate(tasks, start=1):
+        print(f"{index}. {task}")
+
+
+# -----------------------------
+# MAIN PROGRAM LOOP
+# -----------------------------
 while True:
-    print("\n===== TO-DO LIST MANAGER =====")
+    # Menu
+    print("\n===== TO-DO LIST New MANAGER =====")
     print("1. Add Task")
     print("2. View Tasks")
-    print("3. Remove Task")
+    print("3. Remove Task (by number)")
     print("4. Exit")
 
-    choice = input("Enter your choice: ")
+    # Get user choice
+    choice = input("Enter your choice: ").strip()
 
-    # -----------------------------
-    # OPTION 1 → ADD TASK
-    # -----------------------------
+    # -------------------------
+    # OPTION 1: ADD TASK
+    # -------------------------
     if choice == "1":
-        task = input("Enter task to add: ")
-        tasks.append(task)  # Append task to list
-        print("✔ Task added successfully!")
+        task = input("Enter new task: ").strip()
 
-    # -----------------------------
-    # OPTION 2 → VIEW TASKS
-    # -----------------------------
-    elif choice == "2":
-        print("\nYour Tasks:")
-
-        # If no tasks exist
-        if len(tasks) == 0:
-            print("No tasks added yet.")
+        if task:   # avoid empty tasks
+            tasks.append(task)
+            print("✔ Task added!")
         else:
-            # Display tasks with numbering
-            for idx, t in enumerate(tasks, start=1):
-                print(f"{idx}. {t}")
+            print("✘ Cannot add an EMPTY task.")
 
-    # -----------------------------
-    # OPTION 3 → REMOVE TASK BY NUMBER
-    # -----------------------------
+    # -------------------------
+    # OPTION 2: VIEW TASKS
+    # -------------------------
+    elif choice == "2":
+        show_tasks()
+
+    # -------------------------
+    # OPTION 3: REMOVE TASK BY NUMBER
+    # -------------------------
     elif choice == "3":
-        # If no tasks exist, cannot remove
-        if len(tasks) == 0:
-            print("\nNo tasks available to remove!")
+        if not tasks:
+            print("✘ No tasks to remove.")
             continue
 
-        print("\nYour Tasks:")
-        # Show tasks with numbers
-        for idx, t in enumerate(tasks, start=1):
-            print(f"{idx}. {t}")
+        show_tasks()
 
-        # Ask the user for the task number
+        # Ask for number
+        user_input = input("Enter task number to remove: ").strip()
+
+        # Validate number
         try:
-            num = int(input("Enter task number to remove: "))
+            task_num = int(user_input)  # convert to int
 
-            # Check if number is valid
-            if 1 <= num <= len(tasks):
-                removed_task = tasks.pop(num - 1)  # pop removes by index
-                print(f"✔ Task removed: {removed_task}")
+            # Check valid range
+            if 1 <= task_num <= len(tasks):
+                removed = tasks.pop(task_num - 1)  # remove using index
+                print(f"✔ Removed task: {removed}")
             else:
-                print("✘ Invalid task number. Try again!")
+                print(f"✘ Invalid number! Choose between 1 and {len(tasks)}.")
 
         except ValueError:
-            print("✘ Please enter a valid NUMBER!")
+            print("✘ Please enter a VALID NUMBER (like 1, 2, 3).")
 
-    # -----------------------------
-    # OPTION 4 → EXIT
-    # -----------------------------
+    # -------------------------
+    # OPTION 4: EXIT PROGRAM
+    # -------------------------
     elif choice == "4":
-        print("👋 Exiting the program. Goodbye!")
+        print("👋 Exiting... Have a great day!")
         break
 
+    # -------------------------
+    # INVALID MENU OPTION
+    # -------------------------
     else:
-        print("✘ Invalid choice! Please select 1, 2, 3, or 4.")
+        print("✘ Invalid choice! Please enter 1, 2, 3, or 4.")
